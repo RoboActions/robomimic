@@ -212,6 +212,7 @@ class VisualCoreLanguageConditioned(VisualCore):
             flatten=flatten,
             feature_dimension=feature_dimension,
         )
+        self.nets = nn.Sequential(*list(self.nets.children())[1:])
 
     def forward(self, inputs, lang_emb=None):
         """
@@ -224,7 +225,7 @@ class VisualCoreLanguageConditioned(VisualCore):
         # feed lang_emb through backbone explicitly, and then feed through rest of network
         assert self.backbone is not None
         x = self.backbone(inputs, lang_emb)
-        x = self.nets[1:](x)
+        x = self.nets(x)
         if list(self.output_shape(list(inputs.shape)[1:])) != list(x.shape)[1:]:
             raise ValueError('Size mismatch: expect size %s, but got size %s' % (
                 str(self.output_shape(list(inputs.shape)[1:])), str(list(x.shape)[1:]))

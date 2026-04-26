@@ -247,8 +247,6 @@ class ObservationEncoder(Module):
 
         # whether language features should be included in network features
         include_lang_feat = True
-        if (len(rgb_inds_need_lang_cond) > 0):
-            include_lang_feat = False
         return rgb_inds, rgb_inds_need_lang_cond, lang_inds, lang_keys, include_lang_feat
 
     def forward(self, obs_dict):
